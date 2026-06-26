@@ -17,6 +17,7 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_KEY }}
           port: 22
+          command_timeout: 30m
           script: |
             cd dashboard
             git pull origin main
