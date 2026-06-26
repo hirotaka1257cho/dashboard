@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>監視対象登録</title>
+</head>
+<body>
+    <h1>監視対象登録</h1>
+    <form th:action="@{/targets}" th:object="${target}" method="post"> 
+        <label>名前</label>
+        <input type="text" th:field="*{name}">
+
+        <label>会社名</label>
+        <input type="text" th:field="*{company}">
+
+        <label>url</label>
+        <input type="text" th:field="*{url}">
+
+        <label>監視間隔</label>
+        <input type="number" th:field="*{checkInterval}">
+
+        <label>失敗回数</label>
+        <input type="number" th:field="*{failureThreshold}">
+
+        <button type="submit">登録</button>
+    </form>
+</body>
+</html>

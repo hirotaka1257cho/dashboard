@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>company</th>
+                <th>url</th>
+                <th>status</th>
+                <th>checkInterval</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="target : ${targets}">
+                <td th:text="${target.name}"></td>
+                <td th:text="${target.company}"></td>
+                <td th:text="${target.url}"></td>
+                <td th:text="${target.status}"></td>
+                <td th:text="${target.checkInterval}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

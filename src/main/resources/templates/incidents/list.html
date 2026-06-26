@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .active {
+            background-color: #ffcccc;
+        }
+
+        .recovered {
+            background-color: #ffffcc;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>障害一覧</h1>
+    <form th:action="@{/incidents}" method="get">
+        <input type="text" name="name" placeholder="対象名">
+        <input type="text" name="company" placeholder="会社名">
+        <input type="date" name="occurredAt">
+        <input type="checkbox" name="activeOnly" value="true"> 発生中のみ
+        <button type="submit">検索</button>
+    </form>
+    <button onclick="stopAlarm()">アラーム停止</button>
+    <table>
+        <thead>
+            <tr>
+                <th>対象名</th>
+                <th>会社名</th>
+                <th>発生日時</th>
+                <th>復旧日時</th>
+                <th>障害種別</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="incident : ${incidents}" th:class="${incident.recoveredAt == null} ? 'active' : 'recovered'">
+                <td th:text="${incident.target.name}"></td>
+                <td th:text="${incident.target.company}"></td>
+                <td th:text="${incident.occurredAt}"></td>
+                <td th:text="${incident.recoveredAt}"></td>
+                <td th:text="${incident.failureType}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <select id="refreshInterval">
+        <option value="30000">30秒</option>
+        <option value="60000">1分</option>
+        <option value="300000">5分</option>
+        <option value="0">自動更新しない</option>
+    </select>
+    <script>
+        let timer;
+
+        function startTimer() {
+            clearTimeout(timer);
+            const interval = parseInt(document.getElementById('refreshInterval').value);
+            if (interval > 0) {
+                timer = setTimeout(function () {
+                    location.reload();
+                }, interval);
+            }
+        }
+        document.getElementById('refreshInterval').addEventListener('change', startTimer);
+
+        startTimer();
+
+        let audioContext;
+        let oscillator;
+
+        function playAlarm() {
+            audioContext = new AudioContext();
+            oscillator = audioContext.createOscillator();
+            oscillator.connect(audioContext.destination);
+            oscillator.frequency.value = 800;
+            oscillator.start();
+        }
+
+        function stopAlarm() {
+            if (oscillator) {
+                oscillator.stop();
+                oscillator = null;
+            }
+        }
+
+        let previousCount = -1;
+
+        function checkNewIncident() {
+            fetch('/api/incidents/active/count')
+                .then(response => response.json())
+                .then(count => {
+                    if (previousCount !== -1 && count > previousCount) {
+                        playAlarm();
+                    }
+                    previousCount = count;
+                });
+        }
+        setInterval(checkNewIncident, 60000);
+        checkNewIncident();
+
+    </script>
+</body>
+
+</html>
