@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>監視対象一覧</h1>
     <table>
         <thead>
             <tr>
-                <th>name</th>
-                <th>company</th>
-                <th>url</th>
-                <th>status</th>
-                <th>checkInterval</th>
+                <th>対象名</th>
+                <th>会社名</th>
+                <th>URL</th>
+                <th>状態</th>
+                <th>監視間隔</th>
             </tr>
         </thead>
         <tbody>
@@ -21,10 +26,16 @@
                 <td th:text="${target.name}"></td>
                 <td th:text="${target.company}"></td>
                 <td th:text="${target.url}"></td>
-                <td th:text="${target.status}"></td>
+                <td>
+                    <span th:if="${target.status == 'UP'}" class="badge badge-up">UP</span>
+                    <span th:if="${target.status == 'DOWN'}" class="badge badge-down">DOWN</span>
+                    <span th:if="${target.status == 'UNKNOWN'}" class="badge badge-unknown">UNKNOWN</span>
+                </td>
                 <td th:text="${target.checkInterval}"></td>
             </tr>
         </tbody>
     </table>
+    </main>
 </body>
+
 </html>

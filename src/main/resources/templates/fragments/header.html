@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header th:fragment="header">
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <span>監視ダッシュボード</span>
+        <nav>
+            <a th:href="@{/incidents}">障害一覧</a>
+            <a th:href="@{/targets}">監視対象一覧</a>
+            <a th:href="@{/targets/new}">監視対象登録</a>
+        </nav>
+    </header>
+</body>
+</html>

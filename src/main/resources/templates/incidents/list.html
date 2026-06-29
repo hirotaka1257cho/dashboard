@@ -5,103 +5,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .active {
-            background-color: #ffcccc;
-        }
-
-        .recovered {
-            background-color: #ffffcc;
-        }
-    </style>
 </head>
 
 <body>
-    <h1>障害一覧</h1>
-    <form th:action="@{/incidents}" method="get">
-        <input type="text" name="name" placeholder="対象名">
-        <input type="text" name="company" placeholder="会社名">
-        <input type="date" name="occurredAt">
-        <input type="checkbox" name="activeOnly" value="true"> 発生中のみ
-        <button type="submit">検索</button>
-    </form>
-    <button onclick="stopAlarm()">アラーム停止</button>
-    <table>
-        <thead>
-            <tr>
-                <th>対象名</th>
-                <th>会社名</th>
-                <th>発生日時</th>
-                <th>復旧日時</th>
-                <th>障害種別</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="incident : ${incidents}" th:class="${incident.recoveredAt == null} ? 'active' : 'recovered'">
-                <td th:text="${incident.target.name}"></td>
-                <td th:text="${incident.target.company}"></td>
-                <td th:text="${incident.occurredAt}"></td>
-                <td th:text="${incident.recoveredAt}"></td>
-                <td th:text="${incident.failureType}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <select id="refreshInterval">
-        <option value="30000">30秒</option>
-        <option value="60000">1分</option>
-        <option value="300000">5分</option>
-        <option value="0">自動更新しない</option>
-    </select>
-    <script>
-        let timer;
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>障害一覧</h1>
+        <form th:action="@{/incidents}" method="get" class="search-form">
+            <input type="text" name="name" placeholder="対象名">
+            <input type="text" name="company" placeholder="会社名">
+            <input type="date" name="occurredAt">
+            <input type="checkbox" name="activeOnly" value="true"> 発生中のみ
+            <button type="submit">検索</button>
+        </form>
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px; justify-content: flex-end;">
+            <button onclick="stopAlarm()">アラーム停止</button>
+            <select id="refreshInterval">
+                <option value="30000">30秒</option>
+                <option value="60000">1分</option>
+                <option value="300000">5分</option>
+                <option value="0">自動更新しない</option>
+            </select>
+        </div>
+        <table>
+            <colgroup>
+                <col style="width: 17%">
+                <col style="width: 12%">
+                <col style="width: 15%">
+                <col style="width: 14%">
+                <col style="width: 10%">
+                <col style="width: 14%">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>対象名</th>
+                    <th>会社名</th>
+                    <th>発生日時</th>
+                    <th>復旧日時</th>
+                    <th>状態</th>
+                    <th>障害種別</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="incident : ${incidents}"
+                    th:class="${incident.recoveredAt == null} ? 'active' : 'recovered'">
+                    <td th:text="${incident.target.name}"></td>
+                    <td th:text="${incident.target.company}"></td>
+                    <td th:text="${#temporals.format(incident.occurredAt, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td
+                        th:text="${incident.recoveredAt != null} ? ${#temporals.format(incident.recoveredAt, 'yyyy-MM-dd HH:mm')} : ''">
+                    </td>
+                    <td>
+                        <span th:if="${incident.recoveredAt == null}" class="badge badge-active">発生中</span>
+                        <span th:unless="${incident.recoveredAt == null}" class="badge badge-recovered">復旧済み</span>
+                    </td>
+                    <td th:text="${incident.failureType}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="pagination">
+            <span th:if="${page.hasPrevious()}">
+                <a th:href="@{/incidents(page=${page.number - 1})}">前へ</a>
+            </span>
+            <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+                <a th:href="@{/incidents(page=${i})}" th:text="${i + 1}"
+                    th:class="${i == page.number} ? 'current-page' : ''"></a>
+            </span>
+            <span th:if="${page.hasNext()}">
+                <a th:href="@{/incidents(page=${page.number + 1})}">次へ</a>
+            </span>
+        </div>
+        <script>
+            let timer;
 
-        function startTimer() {
-            clearTimeout(timer);
-            const interval = parseInt(document.getElementById('refreshInterval').value);
-            if (interval > 0) {
-                timer = setTimeout(function () {
-                    location.reload();
-                }, interval);
+            function startTimer() {
+                clearTimeout(timer);
+                const interval = parseInt(document.getElementById('refreshInterval').value);
+                if (interval > 0) {
+                    timer = setTimeout(function () {
+                        location.reload();
+                    }, interval);
+                }
             }
-        }
-        document.getElementById('refreshInterval').addEventListener('change', startTimer);
+            document.getElementById('refreshInterval').addEventListener('change', startTimer);
 
-        startTimer();
+            startTimer();
 
-        let audioContext;
-        let oscillator;
+            let audioContext;
+            let oscillator;
 
-        function playAlarm() {
-            audioContext = new AudioContext();
-            oscillator = audioContext.createOscillator();
-            oscillator.connect(audioContext.destination);
-            oscillator.frequency.value = 800;
-            oscillator.start();
-        }
-
-        function stopAlarm() {
-            if (oscillator) {
-                oscillator.stop();
-                oscillator = null;
+            function playAlarm() {
+                audioContext = new AudioContext();
+                oscillator = audioContext.createOscillator();
+                oscillator.connect(audioContext.destination);
+                oscillator.frequency.value = 800;
+                oscillator.start();
             }
-        }
 
-        let previousCount = -1;
+            function stopAlarm() {
+                if (oscillator) {
+                    oscillator.stop();
+                    oscillator = null;
+                }
+            }
 
-        function checkNewIncident() {
-            fetch('/api/incidents/active/count')
-                .then(response => response.json())
-                .then(count => {
-                    if (previousCount !== -1 && count > previousCount) {
-                        playAlarm();
-                    }
-                    previousCount = count;
-                });
-        }
-        setInterval(checkNewIncident, 60000);
-        checkNewIncident();
+            let previousCount = -1;
 
-    </script>
+            function checkNewIncident() {
+                fetch('/api/incidents/active/count')
+                    .then(response => response.json())
+                    .then(count => {
+                        if (previousCount !== -1 && count > previousCount) {
+                            playAlarm();
+                        }
+                        previousCount = count;
+                    });
+            }
+            setInterval(checkNewIncident, 60000);
+            checkNewIncident();
+
+        </script>
+    </main>
 </body>
 
 </html>

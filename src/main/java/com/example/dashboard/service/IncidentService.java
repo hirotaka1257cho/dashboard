@@ -3,6 +3,8 @@ package com.example.dashboard.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,7 @@ public class IncidentService {
         return incidentRepository.findAll();
     }
 
-    public List<Incident> search(String company, String name, LocalDateTime occuredAt, Boolean activeOnly){
+    public Page<Incident> search(String company, String name, LocalDateTime occuredAt, Boolean activeOnly, Pageable pageable){
 
         Specification<Incident> spec = (root, query, cb) -> cb.conjunction();
         if(activeOnly != null && activeOnly){
@@ -43,7 +45,7 @@ public class IncidentService {
             spec = spec.and(IncidentSpecification.occurredAt(occuredAt));
         }
 
-        return incidentRepository.findAll(spec);
+        return incidentRepository.findAll(spec, pageable);
     }
 
     public long countActive(){

@@ -1,29 +1,49 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>監視対象登録</title>
 </head>
+
 <body>
-    <h1>監視対象登録</h1>
-    <form th:action="@{/targets}" th:object="${target}" method="post"> 
-        <label>名前</label>
-        <input type="text" th:field="*{name}">
+    <div th:replace="~{fragments/header :: header}"></div>
+    <main>
+        <h1>監視対象登録</h1>
+        <form th:action="@{/targets}" th:object="${target}" method="post">
+            <div class="form-group">
+            <label>名前</label>
+            <input type="text" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></span>
+            </div>
 
-        <label>会社名</label>
-        <input type="text" th:field="*{company}">
+            <div class="form-group">
+            <label>会社名</label>
+            <input type="text" th:field="*{company}">
+            <span th:if="${#fields.hasErrors('company')}" th:errors="*{company}"></span>
+            </div>
 
-        <label>url</label>
-        <input type="text" th:field="*{url}">
+            <div class="form-group">
+            <label>url</label>
+            <input type="text" th:field="*{url}">
+            <span th:if="${#fields.hasErrors('url')}" th:errors="*{url}"></span>
+            </div>
 
-        <label>監視間隔</label>
-        <input type="number" th:field="*{checkInterval}">
+            <div class="form-group">
+            <label>監視間隔</label>
+            <input type="number" th:field="*{checkInterval}">
+            <span th:if="${#fields.hasErrors('checkInterval')}" th:errors="*{checkInterval}"></span>
+            </div>
 
-        <label>失敗回数</label>
-        <input type="number" th:field="*{failureThreshold}">
-
-        <button type="submit">登録</button>
-    </form>
+            <div class="form-group">
+            <label>失敗回数</label>
+            <input type="number" th:field="*{failureThreshold}">
+            <span th:if="${#fields.hasErrors('failureThreshold')}" th:errors="*{failureThreshold}"></span>
+            </div>
+            <button type="submit">登録</button>
+        </form>
+    </main>
 </body>
+
 </html>
