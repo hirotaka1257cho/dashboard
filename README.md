@@ -42,7 +42,7 @@ DB_PASS=任意のパスワード
 docker-compose up -d --build
 
 ### テーブルを作成
-docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql
+docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql  
 アクセス  
 http://localhost/incidents  
 
