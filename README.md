@@ -27,34 +27,44 @@
 Docker / Docker Composeがインストールされていること
 
 手順：
-bash# リポジトリをクローン
+```bash リポジトリをクローン
 git clone https://github.com/hirotaka1257cho/dashboard.git
 cd dashboard
+```
 
 ### .envファイルを作成
+```
 DB_HOST=db
 DB_PORT=5432
 DB_NAME=dashboard
 DB_USER=postgres
 DB_PASS=任意のパスワード
+```
 
 ### コンテナを起動
+```bash
 docker-compose up -d --build
+```
 
 ### テーブルを作成
-docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql  
+```bash
+docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql
+```
 アクセス  
 http://localhost/incidents  
 
 ### ダミーデータの投入（任意）  
-bashdocker-compose exec db psql -U postgres -d dashboard  
-sqlINSERT INTO monitoring_targets (name, company, url, check_interval, failure_threshold, status, created_at)  
+```bash
+docker-compose exec db psql -U postgres -d dashboard  
+INSERT INTO monitoring_targets (name, company, url, check_interval, failure_threshold, status, created_at)
+```
+```sql
 VALUES   
 ('Webサーバ1', 'A社', 'https://example-a.com', 1, 3, 'UP', now()),  
 ('VPN装置', 'B社', 'https://example-b.com', 1, 3, 'UP', now()),  
 ('決済API', 'C社', 'https://example-c.com', 1, 3, 'DOWN', now()),  
 ('社内ポータル', 'D社', 'https://example-d.com', 1, 3, 'UP', now()),  
-('メールサーバ', 'E社', 'https://example-e.com', 1, 3, 'DOWN', now());  
+('メールサーバ', 'E社', 'https://example-e.com', 1, 3, 'DOWN', now());
 
 INSERT INTO incidents (target_id, occurred_at, recovered_at, failure_type)
 VALUES  
@@ -67,7 +77,8 @@ VALUES
 (4, '2026-06-08 18:00:00', '2026-06-08 18:15:00', 'NO_RESPONSE'),  
 (4, '2026-06-22 01:00:00', NULL, 'NO_RESPONSE'),  
 (5, '2026-06-10 11:00:00', '2026-06-10 11:30:00', 'NO_RESPONSE'),  
-(5, '2026-06-25 07:00:00', NULL, 'NO_RESPONSE');  
+(5, '2026-06-25 07:00:00', NULL, 'NO_RESPONSE');
+``` 
 
 画面説明  
 /incidents → 障害一覧（検索・アラーム音・自動更新）
