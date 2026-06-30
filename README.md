@@ -43,10 +43,10 @@ docker-compose up -d --build
 
 ### テーブルを作成
 docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql
-アクセス
-http://localhost/incidents
-画面説明
+アクセス  
+http://localhost/incidents  
 
+画面説明  
 /incidents → 障害一覧（検索・アラーム音・自動更新）
 /targets → 監視対象一覧
 /targets/new → 監視対象登録
