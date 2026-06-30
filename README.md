@@ -56,7 +56,6 @@ http://localhost/incidents
 ### ダミーデータの投入（任意）  
 ```bash
 docker-compose exec db psql -U postgres -d dashboard
-INSERT INTO monitoring_targets (name, company, url, check_interval, failure_threshold, status, created_at)
 ```
 ```sql
 INSERT INTO monitoring_targets (name, company, url, check_interval, failure_threshold, status, created_at)
