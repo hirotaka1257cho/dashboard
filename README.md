@@ -60,10 +60,10 @@ INSERT INTO monitoring_targets (name, company, url, check_interval, failure_thre
 ```
 ```sql
 VALUES   
-('Webサーバ1', 'A社', 'https://example-a.com', 1, 3, 'UP', now()),  
-('VPN装置', 'B社', 'https://example-b.com', 1, 3, 'UP', now()),  
-('決済API', 'C社', 'https://example-c.com', 1, 3, 'DOWN', now()),  
-('社内ポータル', 'D社', 'https://example-d.com', 1, 3, 'UP', now()),  
+('Webサーバ1', 'A社', 'https://example-a.com', 1, 3, 'UP', now()),
+('VPN装置', 'B社', 'https://example-b.com', 1, 3, 'UP', now()),
+('決済API', 'C社', 'https://example-c.com', 1, 3, 'DOWN', now()),
+('社内ポータル', 'D社', 'https://example-d.com', 1, 3, 'UP', now()),
 ('メールサーバ', 'E社', 'https://example-e.com', 1, 3, 'DOWN', now());
 
 INSERT INTO incidents (target_id, occurred_at, recovered_at, failure_type)
