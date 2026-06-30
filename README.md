@@ -50,24 +50,24 @@ http://localhost/incidents
 bashdocker-compose exec db psql -U postgres -d dashboard  
 sqlINSERT INTO monitoring_targets (name, company, url, check_interval, failure_threshold, status, created_at)  
 VALUES   
-('Webサーバ1', 'A社', 'https://example-a.com', 1, 3, 'UP', now()),
-('VPN装置', 'B社', 'https://example-b.com', 1, 3, 'UP', now()),
-('決済API', 'C社', 'https://example-c.com', 1, 3, 'DOWN', now()),
-('社内ポータル', 'D社', 'https://example-d.com', 1, 3, 'UP', now()),
-('メールサーバ', 'E社', 'https://example-e.com', 1, 3, 'DOWN', now());
+('Webサーバ1', 'A社', 'https://example-a.com', 1, 3, 'UP', now()),  
+('VPN装置', 'B社', 'https://example-b.com', 1, 3, 'UP', now()),  
+('決済API', 'C社', 'https://example-c.com', 1, 3, 'DOWN', now()),  
+('社内ポータル', 'D社', 'https://example-d.com', 1, 3, 'UP', now()),  
+('メールサーバ', 'E社', 'https://example-e.com', 1, 3, 'DOWN', now());  
 
 INSERT INTO incidents (target_id, occurred_at, recovered_at, failure_type)
 VALUES  
-(1, '2026-06-01 09:00:00', '2026-06-01 09:30:00', 'NO_RESPONSE'),
-(1, '2026-06-15 03:00:00', NULL, 'NO_RESPONSE'),
-(2, '2026-06-03 14:00:00', '2026-06-03 14:20:00', 'NO_RESPONSE'),
-(2, '2026-06-18 22:00:00', NULL, 'NO_RESPONSE'),
-(3, '2026-06-05 06:00:00', '2026-06-05 06:10:00', 'NO_RESPONSE'),
-(3, '2026-06-20 12:00:00', NULL, 'NO_RESPONSE'),
-(4, '2026-06-08 18:00:00', '2026-06-08 18:15:00', 'NO_RESPONSE'),
-(4, '2026-06-22 01:00:00', NULL, 'NO_RESPONSE'),
-(5, '2026-06-10 11:00:00', '2026-06-10 11:30:00', 'NO_RESPONSE'),
-(5, '2026-06-25 07:00:00', NULL, 'NO_RESPONSE');
+(1, '2026-06-01 09:00:00', '2026-06-01 09:30:00', 'NO_RESPONSE'),  
+(1, '2026-06-15 03:00:00', NULL, 'NO_RESPONSE'),  
+(2, '2026-06-03 14:00:00', '2026-06-03 14:20:00', 'NO_RESPONSE'),  
+(2, '2026-06-18 22:00:00', NULL, 'NO_RESPONSE'),  
+(3, '2026-06-05 06:00:00', '2026-06-05 06:10:00', 'NO_RESPONSE'),  
+(3, '2026-06-20 12:00:00', NULL, 'NO_RESPONSE'),  
+(4, '2026-06-08 18:00:00', '2026-06-08 18:15:00', 'NO_RESPONSE'),  
+(4, '2026-06-22 01:00:00', NULL, 'NO_RESPONSE'),  
+(5, '2026-06-10 11:00:00', '2026-06-10 11:30:00', 'NO_RESPONSE'),  
+(5, '2026-06-25 07:00:00', NULL, 'NO_RESPONSE');  
 
 画面説明  
 /incidents → 障害一覧（検索・アラーム音・自動更新）
