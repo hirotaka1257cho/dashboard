@@ -51,11 +51,11 @@ docker-compose up -d --build
 docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql
 ```
 アクセス  
-http://localhost/incidents  
+http://localhost/incidents
 
 ### ダミーデータの投入（任意）  
 ```bash
-docker-compose exec db psql -U postgres -d dashboard  
+docker-compose exec db psql -U postgres -d dashboard
 INSERT INTO monitoring_targets (name, company, url, check_interval, failure_threshold, status, created_at)
 ```
 ```sql
@@ -69,14 +69,14 @@ VALUES
 INSERT INTO incidents (target_id, occurred_at, recovered_at, failure_type)
 VALUES  
 (1, '2026-06-01 09:00:00', '2026-06-01 09:30:00', 'NO_RESPONSE'),
-(1, '2026-06-15 03:00:00', NULL, 'NO_RESPONSE'),  
-(2, '2026-06-03 14:00:00', '2026-06-03 14:20:00', 'NO_RESPONSE'),  
-(2, '2026-06-18 22:00:00', NULL, 'NO_RESPONSE'),  
-(3, '2026-06-05 06:00:00', '2026-06-05 06:10:00', 'NO_RESPONSE'),  
-(3, '2026-06-20 12:00:00', NULL, 'NO_RESPONSE'),  
-(4, '2026-06-08 18:00:00', '2026-06-08 18:15:00', 'NO_RESPONSE'),  
-(4, '2026-06-22 01:00:00', NULL, 'NO_RESPONSE'),  
-(5, '2026-06-10 11:00:00', '2026-06-10 11:30:00', 'NO_RESPONSE'),  
+(1, '2026-06-15 03:00:00', NULL, 'NO_RESPONSE'),
+(2, '2026-06-03 14:00:00', '2026-06-03 14:20:00', 'NO_RESPONSE'),
+(2, '2026-06-18 22:00:00', NULL, 'NO_RESPONSE'),
+(3, '2026-06-05 06:00:00', '2026-06-05 06:10:00', 'NO_RESPONSE'),
+(3, '2026-06-20 12:00:00', NULL, 'NO_RESPONSE'),
+(4, '2026-06-08 18:00:00', '2026-06-08 18:15:00', 'NO_RESPONSE'),
+(4, '2026-06-22 01:00:00', NULL, 'NO_RESPONSE'),
+(5, '2026-06-10 11:00:00', '2026-06-10 11:30:00', 'NO_RESPONSE'),
 (5, '2026-06-25 07:00:00', NULL, 'NO_RESPONSE');
 ``` 
 
