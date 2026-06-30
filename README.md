@@ -31,17 +31,17 @@ bash# リポジトリをクローン
 git clone https://github.com/hirotaka1257cho/dashboard.git
 cd dashboard
 
-# .envファイルを作成
+## .envファイルを作成
 DB_HOST=db
 DB_PORT=5432
 DB_NAME=dashboard
 DB_USER=postgres
 DB_PASS=任意のパスワード
 
-# コンテナを起動
+## コンテナを起動
 docker-compose up -d --build
 
-# テーブルを作成
+## テーブルを作成
 docker-compose exec db psql -U postgres -d dashboard -f /docker-entrypoint-initdb.d/schema.sql
 アクセス
 http://localhost/incidents
