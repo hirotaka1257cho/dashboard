@@ -1,7 +1,7 @@
 監視ダッシュボード
 登録した監視対象URLに対して定期的にHTTPリクエストを送信し、死活監視を行うWebアプリです。
 
-使用技術
+使用技術：
 Java 21
 Spring Boot
 Spring Data JPA
@@ -12,7 +12,7 @@ Docker / Docker Compose
 Nginx
 AWS EC2
 
-機能一覧
+機能一覧：
 監視対象の登録・一覧表示
 定期的なHTTP死活監視（デフォルト1分ごと）
 障害の自動検知・記録・復旧管理
@@ -23,10 +23,10 @@ AWS EC2
 
 セットアップ手順
 
-前提条件
+前提条件：
 Docker / Docker Composeがインストールされていること
 
-手順
+手順：
 bash# リポジトリをクローン
 git clone https://github.com/hirotaka1257cho/dashboard.git
 cd dashboard
